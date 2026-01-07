@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Heritage Archive | Koffee 1872</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Inter:wght@300;400;500;700&family=Old+Standard+TT:ital,wght@0,400;0,700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --brand-green: #053f30;
+            --paper: #f4eee0;
+            --ink: #1a1a1a;
+            --accent-gold: #9d7e4a;
+            --dust: rgba(0,0,0,0.03);
+        }
+
+        /* Cinematic Smooth Entrance & Exit */
+        html { 
+            opacity: 0; 
+            transition: opacity 2s cubic-bezier(0.4, 0, 0.2, 1); 
+            scroll-behavior: smooth; 
+        }
+        html.loaded { opacity: 1; }
+
+        body {
+            background-color: #0c0c0c;
+            background-image: url("https://www.transparenttextures.com/patterns/dark-leather.png");
+            color: var(--ink);
+            font-family: 'Old Standard TT', serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* The Scroll Container */
+        .archive-wrapper {
+            background-color: var(--paper);
+            background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+            max-width: 1100px; /* Normalized size */
+            margin: 40px auto;
+            padding: 80px 6%;
+            position: relative;
+            box-shadow: 0 0 80px rgba(0,0,0,0.9);
+            border: 1px solid #d4cbb3;
+        }
+
+        /* Normalized Typography */
+        h1 { font-size: 3.5rem; font-weight: 800; }
+        h2 { font-size: 2.2rem; margin-bottom: 25px; border-bottom: 1px solid var(--accent-gold); padding-bottom: 10px; }
+        h3 { font-size: 1.5rem; color: var(--brand-green); }
+        p { font-size: 1.05rem; line-height: 1.8; text-align: justify; color: #333; }
+
+        .archive-header { text-align: center; margin-bottom: 100px; }
+        .archive-meta { font-family: 'Inter', sans-serif; letter-spacing: 6px; font-weight: 700; color: var(--accent-gold); text-transform: uppercase; font-size: 0.75rem; }
+
+        /* Chapters & Sections */
+        .chapter { margin-bottom: 120px; padding-bottom: 60px; }
+        .chapter-no { font-family: 'Inter', sans-serif; font-weight: 700; color: var(--accent-gold); font-size: 0.8rem; display: block; margin-bottom: 10px; }
+
+        /* The Artifact System - Normalized Sizes */
+        .artifact {
+            background: #fff;
+            padding: 10px 10px 40px 10px;
+            border: 1px solid #ddd;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1), opacity 0.8s ease;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        .artifact:hover { transform: scale(1.03) rotate(0deg) !important; }
+        .artifact img { 
+            width: 100%; 
+            filter: sepia(0.8) contrast(1.1) brightness(0.9); 
+            transition: filter 0.5s ease;
+        }
+        .artifact:hover img { filter: sepia(0.2); }
+        .artifact-caption { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.85rem; margin-top: 12px; text-align: center; color: #666; }
+
+        /* Member Identity Cards */
+        .member-card {
+            border-left: 3px solid var(--brand-green);
+            padding: 20px 25px;
+            background: var(--dust);
+            margin: 15px 0;
+        }
+        .relationship-label { font-family: 'Inter', sans-serif; font-weight: 700; text-transform: uppercase; font-size: 0.65rem; color: var(--accent-gold); letter-spacing: 1.5px; }
+
+        /* Clara's Journal - Smooth Vignette */
+        .clara-journal {
+            font-style: italic;
+            padding: 40px;
+            background: #efeadb;
+            border: 1px solid #d4af37;
+            margin: 50px 0;
+            font-size: 1rem;
+            position: relative;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.02);
+        }
+
+        /* Scroll Animation (Fade & Slide) */
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(30px); 
+            transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.2, 1, 0.3, 1); 
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Back to Top Fade Out Effect */
+        .fade-out { opacity: 0; transform: translateY(-20px); transition: 1s ease; }
+
+        .footer-cta { text-align: center; padding: 60px 0; border-top: 1px solid #ddd; }
+        .back-link { 
+            background: var(--brand-green); 
+            color: white; 
+            padding: 15px 40px; 
+            border-radius: 4px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-family: 'Inter', sans-serif; 
+            font-size: 0.9rem;
+            transition: 0.4s; 
+        }
+        .back-link:hover { background: #000; color: white; }
+
+        @media (max-width: 768px) { .archive-wrapper { padding: 40px 5%; } h1 { font-size: 2.5rem; } }
+
+        /* Interactive Timeline Styles */
+.timeline-section {
+    background: #efeadb;
+    padding: 40px;
+    border: 1px solid #d4af37;
+    margin: 60px 0;
+}
+
+.timeline-item {
+    display: flex;
+    margin-bottom: 25px;
+    border-left: 2px solid var(--brand-green);
+    padding-left: 20px;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.timeline-item:hover {
+    background: rgba(5, 63, 48, 0.05);
+    transform: translateX(5px);
+}
+
+.timeline-year { 
+    font-weight: 800; 
+    color: var(--brand-green); 
+    width: 70px; 
+    flex-shrink: 0; 
+    font-family: 'Inter', sans-serif; 
+}
+
+/* Secret Recipe Modal */
+.recipe-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(5px);
+}
+
+.recipe-card {
+    background: var(--paper);
+    padding: 40px;
+    max-width: 500px;
+    border: 1px solid var(--accent-gold);
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+}
+
+.recipe-card h3 { color: var(--brand-green); margin-bottom: 20px; }
+.close-recipe { 
+    position: absolute; 
+    top: 10px; 
+    right: 15px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    color: var(--accent-gold); 
+}
+
+/* Digital Signature Styles */
+.signature-wrap {
+    text-align: center;
+    margin-top: 40px;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.signature-wrap.active {
+    opacity: 1;
+}
+
+.signature-img {
+    max-width: 250px;
+    filter: sepia(1) brightness(0.5); /* Makes it look like old ink */
+    margin-bottom: 10px;
+}
+
+.sign-label {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent-gold);
+}
+
+/* Digital Signature Styles */
+.signature-wrap {
+    text-align: center;
+    margin-top: 40px;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.signature-wrap.active {
+    opacity: 1;
+}
+
+.signature-img {
+    max-width: 250px;
+    filter: sepia(1) brightness(0.5); /* Makes it look like old ink */
+    margin-bottom: 10px;
+}
+
+.sign-label {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent-gold);
+}
+
+/* Audio Ambience Control */
+.audio-control {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--brand-green);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    cursor: pointer;
+    z-index: 3000;
+    border: 1px solid var(--accent-gold);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.3s;
+}
+
+.audio-control:hover { transform: scale(1.05); background: #000; }
+    </style>
+</head>
+<body>
+<div class="audio-control" onclick="toggleAudio()" id="audioBtn">
+    <span>🔊 AMBIENCE: OFF</span>
+</div>
+<audio id="heritageAudio" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="archive-wrapper">
+        <header class="archive-header reveal">
+            <span class="archive-meta">Genealogical Record // No. 1872-H</span>
+            <h1 style="font-family: 'Playfair Display', serif; color: var(--brand-green);">The Master Chronicles</h1>
+            <p style="margin: 20px auto; max-width: 600px;">A study of the Koffee bloodline, their architectural footprints, and the preservation of a 150-year-old flame.</p>
+        </header>
+
+        <section class="chapter reveal">
+            <span class="chapter-no">CHAPTER I</span>
+            <h2>The Sailor's Rebellion</h2>
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-7">
+                    <p>
+                        The roots of the empire trace back to the cold docks of <strong>Shad Thames</strong>. <strong>Silas Koffee</strong>, a master mariner, returned from Java with a trunk of forbidden seeds. He was a man of the sea, scarred by salt and sun.
+                    </p>
+                    <p>
+                        In 1870, he married <strong>Clara Whitmore</strong>, the <strong>Daughter of Baron Arthur Whitmore</strong>. The Baron, a king of the tea trade, viewed Silas as a common smuggler. To marry Silas, Clara abandoned her inheritance, trading silk dresses for burlap coffee sacks.
+                    </p>
+                    <div class="member-card">
+                        <span class="relationship-label">Family Matriarch</span>
+                        <h3>Clara Koffee (1850—1922)</h3>
+                        <p>Wife of Silas. She managed the ledgers while Silas managed the fire. Without her business acumen, the warehouse would have closed within months.</p>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="artifact" style="transform: rotate(1deg);">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800" alt="Clara Whitmore">
+                        <div class="artifact-caption">Clara Whitmore-Koffee, photographed shortly after the elopement (1871).</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="chapter reveal">
+            <span class="chapter-no">CHAPTER II</span>
+            <h2>The Roots in the Highland</h2>
+            <div class="row g-4">
+                <div class="col-lg-5">
+                    <div class="artifact" style="transform: rotate(-2deg);">
+                        <img src="C:\Users\Windows 11\Downloads\2-is-coffee-bar-1959.jpg" alt="Java Estate">
+                        <div class="artifact-caption">The 'Koffee Highlands' Estate, Indonesia. Est. 1888.</div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <p>
+                        While Arthur ran the London roastery, his <strong>Brother, William Koffee</strong>, returned to the tropics. He established the <strong>Koffee Highland Estate</strong>, a sprawling manor built into the side of a dormant volcano.
+                    </p>
+                    <p>
+                        William was the <strong>Uncle of Evelyn</strong> and a lifelong bachelor. He lived among the pickers, perfecting the "Altitude Tempering" method. The estate remains in the family today, serving as the primary source for our heritage beans.
+                    </p>
+                    <div class="member-card">
+                        <span class="relationship-label">The Younger Son</span>
+                        <h3>William Koffee (1875—1952)</h3>
+                        <p>Brother of Arthur. Known as the 'Green Ghost,' he spent 40 years without ever returning to London, communicating only through telegrams and shipments of beans.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="timeline-section reveal">
+    <h2 style="border: none; text-align: center; margin-bottom: 40px;">Heritage Timeline</h2>
+    <p class="text-center" style="font-size: 0.8rem; margin-bottom: 30px;">(Click a year to reveal a family secret)</p>
+    
+    <div class="timeline-item" onclick="showRecipe('1872', 'The original blend required beans to be cooled in the salt air of the Thames to lock in the oils.')">
+        <div class="timeline-year">1872</div>
+        <div>First roast at Shad Thames warehouse is completed.</div>
+    </div>
+    <div class="timeline-item" onclick="showRecipe('1895', 'The Manor fireplace was built with Java volcanic stone to maintain a specific humidity for bean storage.')">
+        <div class="timeline-year">1895</div>
+        <div>Construction of Koffee Manor in Surrey is finalized.</div>
+    </div>
+    <div class="timeline-item" onclick="showRecipe('1912', 'Arthur used high-pressure steam valves to reduce roasting time by 4 minutes, preventing bitterness.')">
+        <div class="timeline-year">1912</div>
+        <div>Arthur Koffee patents the family\'s Steam-Roast technology.</div>
+    </div>
+    <div class="timeline-item" onclick="showRecipe('1944', 'Evelyn substituted silver-lined crates for coal to keep the beans at a steady 18°C during the winter blitz.')">
+        <div class="timeline-year">1944</div>
+        <div>Evelyn Koffee-Hayes preserves the secret recipe during shortages.</div>
+    </div>
+</section>
+
+<div id="recipeOverlay" class="recipe-overlay">
+    <div class="recipe-card">
+        <span class="close-recipe" onclick="closeRecipe()">✕ CLOSE</span>
+        <span class="relationship-label">Family Secret</span>
+        <h3 id="recipeYear">Year</h3>
+        <p id="recipeText" style="text-align: center; font-style: italic;"></p>
+    </div>
+</div>
+
+        <section class="chapter reveal">
+            <span class="chapter-no">CHAPTER III</span>
+            <h2>Koffee Manor: The London Hearth</h2>
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-7">
+                    <p>
+                        As the brand grew, Silas and Clara built <strong>Koffee Manor</strong> in Surrey. It was an architectural marvel of wood and iron, designed to smell like the roastery. The library housed the <strong>Secret Journals</strong>, where every recipe for the 'Midnight Blend' was kept under lock and key.
+                    </p>
+                    <p>
+                        It was here that <strong>Arthur Koffee</strong> married <strong>Elizabeth Vane</strong>. Elizabeth, the <strong>Daughter-in-law of Silas</strong>, was a chemist who discovered how the morning fog affected the cooling process of the beans.
+                    </p>
+                </div>
+                <div class="col-lg-5">
+                    <div class="artifact">
+                        <img src="C:\Users\Windows 11\Downloads\cropped-8382f10.jpg" alt="The Manor">
+                        <div class="artifact-caption">Koffee Manor, Surrey. The family home for three generations.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="chapter reveal">
+            <span class="chapter-no">CHAPTER IV</span>
+            <div class="clara-journal">
+                "August 14, 1895. The London fog is thick today. Arthur is now ten, and he already follows Silas into the roastery, his small hands stained with the dust of the beans. He asks me why we work while the city sleeps. I told him: because the city only wakes when we are finished."
+                <br><br>
+                — <strong>Extract from Clara's Personal Ledger</strong>
+            </div>
+            <p>
+                During World War II, <strong>Evelyn Koffee-Hayes</strong> (Arthur’s Daughter) managed the business alone while her <strong>Husband, Thomas</strong>, was at the front. She famously traded the family's silver to keep the roastery fires burning during the coal shortages, ensuring the tradition survived.
+            </p>
+        </section>
+
+        <section class="chapter reveal">
+            <span class="chapter-no">CHAPTER V</span>
+            <h2>The Current Pulse</h2>
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-7">
+                    <p>
+                        The flame is now carried by <strong>Julian Koffee</strong>, the <strong>Great-Great-Grandson of Silas</strong>. As the <strong>Son of Robert</strong> and <strong>Sarah Koffee</strong>, Julian maintains the old-world methods while adopting modern sustainability.
+                    </p>
+                    <p>
+                        He is supported by his <strong>Sister, Elena</strong> (Chief Designer) and his <strong>Wife, Maya</strong> (Head of Global Estates). Together, they bridge the gap between 1872 and the present day, ensuring the 'Koffee' name remains synonymous with the perfect cup.
+                    </p>
+                </div>
+                <div class="col-lg-5">
+                    <div class="artifact" style="border: 2px solid var(--brand-green);">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800" alt="Julian" style="filter: none; sepia(0);">
+                        <div class="artifact-caption">Julian Koffee: Current Guardian of the 1872 Recipe.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer-cta reveal">
+            <div class="signature-wrap reveal">
+    <img src="C:\Users\Windows 11\Downloads\old signature.jpg" class="signature-img" alt="Clara's Signature">
+    <span class="sign-label">Validated by the Matriarch, 1892</span>
+</div>
+            <h4 style="font-family: 'Playfair Display', serif; font-style: italic; margin-bottom: 30px;">"The history of the bean is the history of the family."</h4>
+            <a href="index.html" class="back-link">Return to Modern Store</a>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth Loading
+        window.addEventListener('load', () => {
+            document.documentElement.classList.add('loaded');
+        });
+
+        // Intersection Observer for Staggered Reveal
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    // Optional: Fade out when scrolling back up
+                    if (window.scrollY < entry.target.offsetTop) {
+                        entry.target.classList.remove('active');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Smooth Page Exit on link click
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                if(link.href.includes('index.html')) {
+                    e.preventDefault();
+                    document.documentElement.style.opacity = '0';
+                    setTimeout(() => {
+                        window.location.href = link.href;
+                    }, 1000);
+                }
+            });
+        });
+
+        // Function to show the Secret Recipe Pop-up
+function showRecipe(year, text) {
+    document.getElementById('recipeYear').innerText = "The Secret of " + year;
+    document.getElementById('recipeText').innerText = text;
+    document.getElementById('recipeOverlay').style.display = 'flex';
+}
+
+// Function to close the Pop-up
+function closeRecipe() {
+    document.getElementById('recipeOverlay').style.display = 'none';
+}
+
+// Close pop-up if user clicks outside the card
+window.onclick = function(event) {
+    let overlay = document.getElementById('recipeOverlay');
+    if (event.target == overlay) {
+        overlay.style.display = "none";
+    }
+}
+
+// Toggle Audio Ambience
+function toggleAudio() {
+    var audio = document.getElementById("heritageAudio");
+    var btn = document.getElementById("audioBtn");
+    if (audio.paused) {
+        audio.play();
+        btn.innerHTML = "🔊 AMBIENCE: ON";
+    } else {
+        audio.pause();
+        btn.innerHTML = "🔇 AMBIENCE: OFF";
+    }
+}
+
+// Special Observer for the Signature Fade-in
+const signObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+        }
+    });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.signature-wrap').forEach(el => signObserver.observe(el));
+    </script>
+</body>
+</html>

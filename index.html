@@ -1249,7 +1249,24 @@ img {
         max-width: 280px;
     }
 }
+
+        /* --- DEVELOPER FOOTER LINK EFFECT --- */
+.dev-link {
+    display: inline-block;
+    text-decoration: none;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), text-shadow 0.3s ease;
+}
+
+.dev-link:hover {
+    transform: translateY(-2px) scale(1.05);
+    text-shadow: 0 2px 8px rgba(25, 135, 84, 0.25);
+}
+
+.dev-link:active {
+    transform: translateY(0) scale(0.98);
+}
     </style>
+
 </head>
 <body>
 
@@ -1552,7 +1569,9 @@ img {
             </div>
         </div>
     </footer>
-    <div class="dev-footer">Developed by <span class="fw-bold text-success">@Karl Ashley Besa</span></div>
+    <div class="dev-footer">
+    Developed by <a href="https://krxley.vercel.app/" target="_blank" class="fw-bold text-success dev-link">@Karl Ashley Besa</a>
+</div>
 
     <script>
         let cart = [];

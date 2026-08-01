@@ -1250,20 +1250,26 @@ img {
     }
 }
 
-        /* --- DEVELOPER FOOTER LINK EFFECT --- */
+        /* --- DEVELOPER FOOTER LINK (MATCHES NAVBAR BRAND) --- */
 .dev-link {
     display: inline-block;
     text-decoration: none;
-    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), text-shadow 0.3s ease;
+    cursor: pointer;
+    /* Matches the navbar-brand smooth 0.5s bezier curve */
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .dev-link:hover {
-    transform: translateY(-2px) scale(1.05);
-    text-shadow: 0 2px 8px rgba(25, 135, 84, 0.25);
+    /* Matches navbar-brand hover: subtle lift + green glow */
+    transform: translateY(-3px);
+    color: var(--primary-green) !important;
+    text-shadow: 0 4px 10px rgba(6, 78, 59, 0.15);
 }
 
 .dev-link:active {
-    transform: translateY(0) scale(0.98);
+    /* Subtle click feedback */
+    transform: translateY(-1px) scale(0.98);
+    transition: 0.1s;
 }
     </style>
 
